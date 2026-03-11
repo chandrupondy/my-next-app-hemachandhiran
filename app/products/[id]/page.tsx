@@ -1,4 +1,7 @@
-import { products } from "../../data/products";
+//"use client";
+
+import { products } from "@/data/products";
+//import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -7,8 +10,10 @@ type Props = {
   }>;
 };
 
-export default async function ProductDetails({ params }: Props) {
-     const { id } = await params;
+export default async function ProductDetails({params}: Props) {
+  //const params = useParams();
+  const {id} = await params;
+
   const product = products.find((p) => p.id === id);
 
   if (!product) {
