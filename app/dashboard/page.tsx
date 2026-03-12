@@ -26,6 +26,10 @@ export default function Dashboard() {
         setLoading(false);
       } catch (error) {
         console.log("Failed to load profile");
+        if (error?.status === 401) {
+        router.replace("/401");
+        return;
+        }
         setLoading(false);
         setError("Failed to load profile data");
       }

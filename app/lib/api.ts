@@ -11,9 +11,11 @@ export async function apiFetch(url: string, options?: RequestInit) {
   if (response.status === 401) {
     if (typeof window !== "undefined") {
       localStorage.removeItem("isLoggedIn");
-      window.location.href = "/login";
+      localStorage.removeItem("userEmail");
+      /* window.location.href = "/login"; */
     }
-    throw new Error("Session expired");
+  //  throw new Error("Session expired");
+      throw { status: 401 };
   }
 
   return response.json();
