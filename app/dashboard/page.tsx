@@ -24,7 +24,7 @@ export default function Dashboard() {
         const data = await apiFetch("/api/profile");
         setProfile(data);
         setLoading(false);
-      } catch (error) {
+      } catch (error: any) {
         console.log("Failed to load profile");
         if (error?.status === 401) {
         router.replace("/401");
