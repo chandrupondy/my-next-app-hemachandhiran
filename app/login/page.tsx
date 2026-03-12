@@ -41,6 +41,7 @@ export default function LoginPage() {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userEmail", email);
       localStorage.setItem("isAuthenticated", "true");
+      //document.cookie = "authToken=loggedin";
       setMessage("Login successful ✅");
       router.push("/dashboard");
     } else {
