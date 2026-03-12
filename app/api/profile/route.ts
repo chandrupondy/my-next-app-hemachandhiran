@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function GET(req: Request) {
-  const token = req.headers.get("authorization");
+export async function GET(req: NextRequest) {
+  const authToken = req.cookies.get("authToken");
 
-  if (!token) {
+  if (!authToken) {
     return NextResponse.json(
       { message: "Unauthorized" },
       { status: 401 }

@@ -8,67 +8,81 @@ import { apiFetch } from "@/lib/api";
 export default function Dashboard() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState<any>(null);
+  const [error, setError] = useState("");
 
-  //  useEffect(() => {
-  //   const auth = localStorage.getItem("isAuthenticated");
-  //   const userEmail = localStorage.getItem("userEmail");
+  useEffect(() => {
+    // Get email from localStorage
+    const userEmail = localStorage.getItem("userEmail");
+    if (userEmail) {
+      setEmail(userEmail);
+    }
 
-  //   if (!auth) {
-  //     router.push("/login");
-  //   } else {
-  //     setIsLoggedIn(true);
-  //     setEmail(userEmail || "");
-  //     setLoading(false);
-  //   }
-  // }, [router]);
-
-   useEffect(() => {
     const loadProfile = async () => {
       try {
         const data = await apiFetch("/api/profile");
         setProfile(data);
+        setLoading(false);
       } catch (error) {
-        console.log("Session expired");
+        console.log("Failed to load profile");
+        setLoading(false);
+        setError("Failed to load profile data");
       }
     };
 
     loadProfile();
   }, []);
 
-   if (!profile) return <p>Loading...</p>;
+  const handleLogout = async () => {
+    // Clear localStorage
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+    
+    // Clear the auth cookie by calling logout API
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
+    
+    // Redirect to login
+    router.push("/login");
+  };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Name: {profile.name}</p>
-      <p>Email: {profile.email}</p>
+    <div style={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <h1>Dashboard</h1>
+        <button 
+          onClick={handleLogout}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#dc2626",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Logout
+        </button>
+      </div>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <div style={{ backgroundColor: "#f3f4f6", padding: "20px", borderRadius: "8px" }}>
+        <h2>Profile Information</h2>
+        <p><strong>Email from Login:</strong> {email}</p>
+        {profile && (
+          <>
+            <p><strong>Name:</strong> {profile.name}</p>
+            <p><strong>Email:</strong> {profile.email}</p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
-  
-//   const logout = () => {
-//   localStorage.removeItem("isLoggedIn");
-//   localStorage.removeItem("userEmail");
-//   localStorage.removeItem("isAuthenticated");
-//   router.push("/login");
-// };
-
-// if (loading) return <p>Loading...</p>;
-
-//   return (
-//     <div>
-//       {isLoggedIn ? (
-//         <>
-//         <h2>Welcome {email}</h2>
-//         <button onClick={logout}>Logout</button>
-//         </>
-//       ) : (
-//         <h2>Please login first</h2>
-//       )}
-//     </div>
-//   );
-  
-// }
