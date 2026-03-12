@@ -3,6 +3,7 @@
 //import React, { useState } from "react";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // interface LoginForm {
 //   email: string;
@@ -15,6 +16,7 @@ import { useState } from "react";
 // }
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -38,7 +40,9 @@ export default function LoginPage() {
     if (email === MOCK_USER.email && password === MOCK_USER.password) {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userEmail", email);
+      localStorage.setItem("isAuthenticated", "true");
       setMessage("Login successful ✅");
+      router.push("/dashboard");
     } else {
       setMessage("Invalid email or password ❌");
     }
@@ -162,6 +166,7 @@ export default function LoginPage() {
         </button>
       </form>
       {message && <p style={{ marginTop: "15px" }}>{message}</p>}
+
     </div>
   );
 }
