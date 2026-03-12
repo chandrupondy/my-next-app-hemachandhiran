@@ -36,6 +36,8 @@ export default function LoginPage() {
     }
 
     if (email === MOCK_USER.email && password === MOCK_USER.password) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", email);
       setMessage("Login successful ✅");
     } else {
       setMessage("Invalid email or password ❌");
