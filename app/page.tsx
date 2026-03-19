@@ -3,9 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { increment, decrement } from "@/features/counter/counterSlice";
 
 export default function Home() {
   const [search, setSearch] = useState("");
+
+  const count = useSelector((state: RootState) => state.counter.value);
+const dispatch = useDispatch<AppDispatch>();
 
   const items = [
     { id: 1, name: "Apple", emoji: "🍎" },
@@ -145,6 +151,36 @@ export default function Home() {
           </div>
         )}
       </section>
+            {/* Counter Section */}
+<section className="max-w-4xl mx-auto px-6 pb-10 text-center">
+  <div className="inline-block bg-slate-100 dark:bg-slate-800 rounded-2xl px-6 py-4 shadow-sm">
+    
+    <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
+      Redux Counter
+    </p>
+
+    <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-4">
+      {count}
+    </h2>
+
+    <div className="flex items-center justify-center gap-4">
+      <button
+        onClick={() => dispatch(increment())}
+        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition"
+      >
+        + Increment
+      </button>
+
+      <button
+        onClick={() => dispatch(decrement())}
+        className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+      >
+        − Decrement
+      </button>
+    </div>
+
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="text-center text-sm text-slate-400 dark:text-slate-600 py-6 border-t border-slate-200 dark:border-slate-700">
