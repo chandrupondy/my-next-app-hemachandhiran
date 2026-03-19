@@ -6,6 +6,7 @@ import ThemeToggle from "@/components/theme-toggle";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { increment, decrement } from "@/features/counter/counterSlice";
+// import ItemCrud from "@/components/itemCrud";
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -79,6 +80,10 @@ const dispatch = useDispatch<AppDispatch>();
           >
             View Dashboard
           </Link>
+          <Link href="/reduxCrud" className="text-base font-semibold border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 px-6 py-3 rounded-xl transition-all duration-200"
+>
+  Redux CRUD
+</Link>
         </div>
       </section>
 
@@ -181,6 +186,7 @@ const dispatch = useDispatch<AppDispatch>();
 
   </div>
 </section>
+{/* <ItemCrud /> */}
 
       {/* Footer */}
       <footer className="text-center text-sm text-slate-400 dark:text-slate-600 py-6 border-t border-slate-200 dark:border-slate-700">
