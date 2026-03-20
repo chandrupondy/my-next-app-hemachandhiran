@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type User = {
+interface User {
   id: number;
   name: string;
-  email: string;
-};
+}
 
 interface UserState {
   users: User[];
@@ -22,17 +21,33 @@ const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
+
+    // READ
     fetchUsersRequest(state) {
       state.loading = true;
-      state.error = null;
     },
     fetchUsersSuccess(state, action: PayloadAction<User[]>) {
-      state.loading = false;
       state.users = action.payload;
+      state.loading = false;
     },
     fetchUsersFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
+    },
+
+    // CREATE
+    addUserRequest(state, action: PayloadAction<User>) {
+      state.loading = true;
+    },
+
+    // UPDATE
+    updateUserRequest(state, action: PayloadAction<User>) {
+      state.loading = true;
+    },
+
+    // DELETE
+    deleteUserRequest(state, action: PayloadAction<number>) {
+      state.loading = true;
     },
   },
 });
@@ -41,6 +56,9 @@ export const {
   fetchUsersRequest,
   fetchUsersSuccess,
   fetchUsersFailure,
+  addUserRequest,
+  updateUserRequest,
+  deleteUserRequest,
 } = userSlice.actions;
 
 export default userSlice.reducer;
