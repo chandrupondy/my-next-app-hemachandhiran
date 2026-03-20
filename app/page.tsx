@@ -6,10 +6,13 @@ import ThemeToggle from "@/components/theme-toggle";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { increment, decrement } from "@/features/counter/counterSlice";
+import { fetchUsersRequest } from "@/features/users/userSlice";
+import { useRouter } from "next/navigation";
 // import ItemCrud from "@/components/itemCrud";
 
 export default function Home() {
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   const count = useSelector((state: RootState) => state.counter.value);
 const dispatch = useDispatch<AppDispatch>();
@@ -182,6 +185,9 @@ const dispatch = useDispatch<AppDispatch>();
       >
         − Decrement
       </button>
+      <button onClick={() => {console.log("Home Clicked ✅"); dispatch(fetchUsersRequest()); router.push("/reduxSaga");}} className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition">
+      Fetch Users (Saga)
+    </button>
     </div>
 
   </div>

@@ -2,8 +2,9 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "@/features/users/userSlice";
+//import { fetchUsers } from "@/features/users/userSlice";
 import type { AppDispatch, RootState } from "@/store/store";
+import { fetchUsersRequest } from "@/features/users/userSlice";
 
 
 export default function Users() {
@@ -12,7 +13,7 @@ export default function Users() {
   const { users, loading, error } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    dispatch(fetchUsers());
+    dispatch(fetchUsersRequest());
   }, [dispatch]);
 
   if (loading) return <p>Loading...</p>;

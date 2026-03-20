@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
   id: number;
@@ -18,37 +18,29 @@ const initialState: UserState = {
   error: null,
 };
 
-export const fetchUsers = createAsyncThunk<User[]>(
-  "users/fetchUsers",
-  async (_, thunkAPI) => {
-    try {
-      const response = await fetch("https://jsonplaceholder.typicode.com/users");
-      return await response.json();
-    } catch (error) {
-      return thunkAPI.rejectWithValue("Failed to fetch users");
-    }
-  }
-);
-
 const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUsers.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.loading = false;
-        state.users = action.payload;
-      })
-      .addCase(fetchUsers.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
+  reducers: {
+    fetchUsersRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchUsersSuccess(state, action: PayloadAction<User[]>) {
+      state.loading = false;
+      state.users = action.payload;
+    },
+    fetchUsersFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
+
+export const {
+  fetchUsersRequest,
+  fetchUsersSuccess,
+  fetchUsersFailure,
+} = userSlice.actions;
 
 export default userSlice.reducer;
